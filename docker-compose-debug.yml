@@ -1,0 +1,28 @@
+version: "3.4"
+services:
+  duende-login:
+    image: bakayarusama/duende-login:1.0.0
+    container_name: duende-login
+    
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - configuration=Debug
+        - plateform=windows/amd64
+    ports: 
+      - 2323:8080
+    
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ApplicationVersion: 1.0.0
+
+      Databases__ConfigurationStore: "Data Source=./Data/configurationStore.db"
+      Databases__OperationalStore: "Data Source=./Data/operationStore.db"
+      Databases__Identity: "Data Source=./Data/identity.db"
+
+    
+    volumes:
+      - C:\Users\brend\Source\Repos\brendanGiraudet\Duende\login\Data:/app/Data
+      
+    restart: always
