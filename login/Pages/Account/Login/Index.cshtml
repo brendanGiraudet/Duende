@@ -49,6 +49,17 @@
                         </form>
                     </div>
                 </div>
+
+                @if (Model.View.EnableRegister)
+                {
+                    <br/>
+                    <div>
+                        <span>You don't  have any login ?</span>
+                        <a class="btn btn-secondary" href="/Account/Register">Register</a>
+                    </div>
+
+                    <br />
+                }
             </div>
         }
 
@@ -57,19 +68,23 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>External Account</h2>
+                        <h2>External Account (Currently not enable)</h2>
                     </div>
                     <div class="card-body">
                         <ul class="list-inline">
                             @foreach (var provider in Model.View.VisibleExternalProviders)
                             {
                                 <li class="list-inline-item">
-                                    <a class="btn btn-secondary"
+                                    <a class="btn btn-secondary disabled">
+                                        @provider.DisplayName
+                                    </a>
+                                    
+                                    @* <a class="btn btn-secondary"
                                        asp-page="/ExternalLogin/Challenge"
                                        asp-route-scheme="@provider.AuthenticationScheme"
                                        asp-route-returnUrl="@Model.Input.ReturnUrl">
                                         @provider.DisplayName
-                                    </a>
+                                    </a> *@
                                 </li>
                             }
                         </ul>

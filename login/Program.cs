@@ -1,4 +1,4 @@
-using login;
+using login.Extensions;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()

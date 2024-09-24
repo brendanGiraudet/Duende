@@ -7,11 +7,13 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using login.Models;
+using login.Settings;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Options;
 
 namespace login.Pages.Login;
 
@@ -25,19 +27,21 @@ public class Index : PageModel
     private readonly IEventService _events;
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
+    private readonly FeatureSettings _featureSettings;
 
     public ViewModel View { get; set; } = default!;
         
     [BindProperty]
     public InputModel Input { get; set; } = default!;
-        
+
     public Index(
         IIdentityServerInteractionService interaction,
         IAuthenticationSchemeProvider schemeProvider,
         IIdentityProviderStore identityProviderStore,
         IEventService events,
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
+        SignInManager<ApplicationUser> signInManager,
+        IOptions<FeatureSettings> featureSettingsOptions)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -45,6 +49,7 @@ public class Index : PageModel
         _schemeProvider = schemeProvider;
         _identityProviderStore = identityProviderStore;
         _events = events;
+        _featureSettings = featureSettingsOptions.Value;
     }
 
     public async Task<IActionResult> OnGet(string? returnUrl)
@@ -210,6 +215,7 @@ public class Index : PageModel
         {
             AllowRememberLogin = LoginOptions.AllowRememberLogin,
             EnableLocalLogin = allowLocal && LoginOptions.AllowLocalLogin,
+            EnableRegister = _featureSettings.EnableRegister,
             ExternalProviders = providers.ToArray()
         };
     }

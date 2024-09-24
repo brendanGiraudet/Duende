@@ -1,12 +1,11 @@
 using Duende.IdentityServer;
 using login.Data;
-using login.Extensions;
 using login.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-namespace login;
+namespace login.Extensions;
 
 internal static class HostingExtensions
 {
@@ -46,7 +45,7 @@ internal static class HostingExtensions
                 options.ConfigureDbContext = b => b.UseSqlite(operationalStoreConnectionString, sql => sql.MigrationsAssembly(migrationAssembly));
             })
             .AddAspNetIdentity<ApplicationUser>();
-        
+
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
@@ -60,14 +59,15 @@ internal static class HostingExtensions
             });
 
         builder.Services.AddCustomServices();
+        builder.Services.AddSettings(builder.Configuration);
 
         return builder.Build();
     }
-    
+
     public static WebApplication ConfigurePipeline(this WebApplication app)
-    { 
+    {
         app.UseSerilogRequestLogging();
-    
+
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -79,7 +79,7 @@ internal static class HostingExtensions
         app.UseRouting();
         app.UseIdentityServer();
         app.UseAuthorization();
-        
+
         app.MapRazorPages()
             .RequireAuthorization();
 
