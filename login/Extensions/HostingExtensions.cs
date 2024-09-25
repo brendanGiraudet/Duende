@@ -38,6 +38,8 @@ internal static class HostingExtensions
                 options.EmitStaticAudienceClaim = true;
                 options.KeyManagement.Enabled = false;
             })
+            // add certificate
+            .AddCertificate(builder.Configuration)
             .AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext = b => b.UseSqlite(configurationStoreConnectionString, sql => sql.MigrationsAssembly(migrationAssembly));

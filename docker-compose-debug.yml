@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   duende-login:
-    image: bakayarusama/duende-login:1.1.1
+    image: bakayarusama/duende-login:1.1.2
     container_name: duende-login
     
     build:
@@ -15,14 +15,23 @@ services:
     
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ApplicationVersion: 1.1.1
+      ApplicationVersion: 1.1.2
+
+      ASPNETCORE_Kestrel__Certificates__Default__KeyPath: "/app/certificates/private.key"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/app/certificates/certificate.crt"
+      ASPNETCORE_URLS: "https://+:2323"
+      ASPNETCORE_HTTPS_PORT: "2323"
 
       Databases__ConfigurationStore: "Data Source=./Data/configurationStore.db"
       Databases__OperationalStore: "Data Source=./Data/operationStore.db"
       Databases__Identity: "Data Source=./Data/identity.db"
 
+      Login__CertificatePath: "/app/certificates/certificate.pfx"
+      Login__CertificatePassword: "certificate123*"
+
     
     volumes:
       - C:\Users\brend\Source\Repos\brendanGiraudet\Duende\login\Data:/app/Data
+      - C:\Users\brend\Source\Repos\brendanGiraudet\Duende\login\Settings:/app/certificates
       
     restart: always
