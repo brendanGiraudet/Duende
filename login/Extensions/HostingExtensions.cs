@@ -1,6 +1,7 @@
 using Duende.IdentityServer;
 using login.Data;
 using login.Models;
+using login.Services.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -44,7 +45,8 @@ internal static class HostingExtensions
             {
                 options.ConfigureDbContext = b => b.UseSqlite(operationalStoreConnectionString, sql => sql.MigrationsAssembly(migrationAssembly));
             })
-            .AddAspNetIdentity<ApplicationUser>();
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddProfileService<CustomProfileService>();
 
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
