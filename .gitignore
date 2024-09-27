@@ -405,3 +405,5 @@ FodyWeavers.xsd
 /login/Data/operationStore.db-wal
 /login/Settings/certificate.crt
 /login/Settings/private.key
+login/Data/configurationStore.db-shm
+login/Data/configurationStore.db-wal
